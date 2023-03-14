@@ -1,0 +1,31 @@
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #aaa;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+*{
+	margin:0px;
+	padding:0px;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.7;
+
+}
+html,
+body {
+  height: 100%;
+
+}
+
+a.active {
+  color: #2b74e2 !important;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px #aaa;
+}

@@ -1,0 +1,48 @@
+admin
+    home -> Missed Events
+    User -> Add User
+    report -> user-vice event report
+
+User
+    home->Upcoming Events  
+    Events->add event
+    
+
+CREATE TABLE user (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    dept VARCHAR(125) NOT NULL,
+    mail VARCHAR(125) NOT NULL,
+    password VARCHAR(125) NOT NULL,
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+
+CREATE TABLE event(
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    uid INT(6) NOT NULL,
+    dept VARCHAR(125) NOT NULL,
+    date DATE NOT NULL,
+    file VARCHAR(125) NOT NULL,
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+
+# @app.route("/table")
+# def index():
+#     con = sqlite3.connect("database.db")
+#     con.execute("create table Employees (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, address TEXT NOT NULL)")
+#     return render_template("index.html")
+
+# @app.route("/add")
+# def add():
+#     con = sqlite3.connect("database.db")
+#     con.execute("INSERT into Employees (name, email, address) values (?,?,?)",("Reegan","reegan@gmail.com","1234567"))
+#     con.commit()
+#     return render_template("index.html")
+
+@app.route("/admin/home")  
+def admin_home():
+    con = sqlite3.connect("database.db")  
+    con.row_factory = sqlite3.Row  
+    cur = con.cursor()  
+    cur.execute("select * from Employees")  
+    rows = cur.fetchall()  
+    return render_template("view.html",rows = rows)
