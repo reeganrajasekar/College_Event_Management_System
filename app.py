@@ -23,7 +23,7 @@ def login():
             return redirect("/home")
         else:
             return redirect("/?err=email or password is wrong!")
-    return redirect("/?err=email or password is wrong!")
+    return render_template("login.html")
 
 @app.route("/home")  
 def home():
@@ -130,7 +130,13 @@ def admin_report():
     cur = con.cursor()
     cur.execute("select DISTINCT id , dept from user")  
     rows = cur.fetchall()
-    return render_template("admin/report.html",rows=rows)
+    cur.execute("select * from event WHERE file='No'")  
+    pending = cur.fetchall()
+    cur.execute("select * from event")  
+    total = cur.fetchall()
+    cur.execute("select * from event WHERE NOT file='No'")  
+    completed = cur.fetchall()
+    return render_template("admin/report.html",rows=rows,pending=len(pending),total=len(total),completed=len(completed))
 
 @app.route("/admin/report/download", methods =["GET", "POST"])  
 def admin_report_download():  
