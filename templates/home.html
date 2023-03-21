@@ -49,6 +49,7 @@
                     <th style="color:#fff">Event</th>
                     <th style="color:#fff">Description</th>
                     <th style="color:#fff">Planned Date</th>
+                    <th style="color:#fff;width:250px">Expiry Reason Letter</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,11 +59,25 @@
                     <td>{{row["event"]}}</td>
                     <td>{{row["desc"]}}</td>
                     <td><script>document.write(moment("{{row['date']}}").format("ll"))</script></td>
+                    {% if(row['efile']=="No") %}
+                    <td>
+                        <form action="/event/expiry" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="{{row['id']}}">
+                            <input required class="form-control" type="file" name="efile">
+                            <button class="btn  w-100" style="background-color:#2b74e2;color:#fff">Add</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                    {% if row['efile']!="No" %}
+                    <td>
+                        <a href="/static/uploads/{{row['efile']}}" target="_blank">Click here</a>
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 {% if old|length ==0 %}
                 <tr>
-                    <td colspan="4" class="text-center">Nothing Found</td>
+                    <td colspan="5" class="text-center">Nothing Found</td>
                 </tr>
                 {% endif %}
             </tbody>

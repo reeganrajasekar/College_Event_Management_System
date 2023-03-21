@@ -53,6 +53,7 @@
                 <th>Event</th>
                 <th>Description</th>
                 <th>Date</th>
+                <th>Request Letter</th>
                 <th style="width:300px;">Action</th>
             </tr>
         </thead>
@@ -63,6 +64,16 @@
                 <td>{{row["event"]}}</td>
                 <td>{{row["desc"]}}</td>
                 <td><script>document.write(moment("{{row['date']}}").format("ll"))</script></td>
+                {% if(row['efile']=="No") %}
+                <td>
+                    Letter Not Uploaded
+                </td>
+                {% endif %}
+                {% if row['efile']!="No" %}
+                <td>
+                    <a href="/static/uploads/{{row['efile']}}" target="_blank">Click here</a>
+                </td>
+                {% endif %}
                 <td>
                     <form action="/admin/event/enable" method="post">
                         <input type="hidden" name="id" value="{{row['id']}}">

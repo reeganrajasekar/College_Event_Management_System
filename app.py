@@ -57,7 +57,7 @@ def event_add():
         if 'user' in session:
             user = session['user']
         con = sqlite3.connect("database.db")
-        con.execute("INSERT into event(event,desc,date,file,did) values (?,?,?,?,?)",(request.form["event"],request.form["desc"],request.form["date"],"No",user))
+        con.execute("INSERT into event(event,desc,date,file,did,efile) values (?,?,?,?,?,?)",(request.form["event"],request.form["desc"],request.form["date"],"No",user,"No"))
         con.commit()
         return redirect("/event?msg=Event added Successfully!")
     return redirect("/")
@@ -72,6 +72,18 @@ def event_upload():
         con.execute("UPDATE event SET file=? WHERE id=?",(file_name,request.form["id"]))
         con.commit()
         return redirect("/home?msg=Event Document added Successfully!")
+    return redirect("/")
+
+@app.route("/event/expiry",methods=["GET","POST"])  
+def event_expiry():
+    if request.method == "POST":
+        f = request.files['efile']
+        file_name = secure_filename(f.filename)
+        f.save("static/uploads/"+file_name)
+        con = sqlite3.connect("database.db")
+        con.execute("UPDATE event SET efile=? WHERE id=?",(file_name,request.form["id"]))
+        con.commit()
+        return redirect("/home?msg=Event Expiry Reason Letter uploaded Successfully!")
     return redirect("/")
 
 @app.route("/admin")  
@@ -161,5 +173,5 @@ def admin_report_download():
 def table():
     con = sqlite3.connect("database.db")
     con.execute("CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT,dept TEXT NOT NULL,email TEXT NOT NULL,password TEXT NOT NULL)")
-    con.execute("CREATE TABLE event(id INTEGER PRIMARY KEY AUTOINCREMENT,did INTEGER NOT NULL,date DATE NOT NULL,file TEXT NOT NULL,event TEXT NOT NULL,desc TEXT NOT NULL)")
+    con.execute("CREATE TABLE event(id INTEGER PRIMARY KEY AUTOINCREMENT,did INTEGER NOT NULL,date DATE NOT NULL,file TEXT NOT NULL,efile TEXT,event TEXT NOT NULL,desc TEXT NOT NULL)")
     return "Table Created"
